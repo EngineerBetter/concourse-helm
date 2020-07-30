@@ -1,7 +1,7 @@
 variable "web_domain" {}
 
 resource "tls_private_key" "ca" {
-  algorithm = "ECDSA"
+  algorithm = "RSA"
 }
 
 resource "tls_self_signed_cert" "ca" {
@@ -23,7 +23,7 @@ resource "tls_self_signed_cert" "ca" {
 }
 
 resource "tls_private_key" "tls_key" {
-  algorithm = "ECDSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "cert" {
