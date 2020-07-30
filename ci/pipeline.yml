@@ -1,0 +1,89 @@
+---
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: latest
+- name: helm-chart
+  type: registry-image
+  source:
+    repository: jghiloni/helm-chart-resource
+    tag: v0.1.1
+
+resources:
+- name: concourse-helm-repo
+  type: git
+  source:
+    uri: git@github.com:EngineerBetter/concourse-helm.git
+    private_key: ((github_private_key))
+
+- name: concourse-helm-chart
+  type: helm-chart
+  source:
+    repository_url: https://concourse-charts.storage.googleapis.com
+    chart: concourse
+
+- name: terraform-keys-and-certs
+  type: terraform
+  source:
+    env_name: ((env))
+    backend_type: s3
+    backend_config:
+      bucket: ((terraform_state_bucket))
+      key: ((env))/terraform.tfstate
+      region: ((aws_default_region))
+      access_key: ((aws_access_key_id))
+      secret_key: ((aws_secret_access_key))
+    vars:
+      web_domain: ((web_domain))
+
+- name: helm-image
+  type: registry-image
+  source:
+    repository: alpine/k8s
+
+jobs:
+- name: set-pipeline
+  serial: true
+  plan:
+  - get: concourse-helm-repo
+    trigger: true
+  - set_pipeline: self
+    file: concourse-helm-repo/ci/pipeline.yml
+    vars:
+      env: ((env))
+
+- name: create-keys-and-certs
+  serial: true
+  plan:
+  - get: concourse-helm-repo
+    trigger: true
+    passed:
+    - set-pipeline
+  - put: terraform-keys-and-certs
+    params:
+      terraform_source: concourse-helm-repo/terraform
+
+- name: deploy-concourse
+  serial: true
+  plan:
+  - in_parallel:
+    - get: concourse-helm-repo
+      trigger: true
+      passed:
+      - create-keys-and-certs
+    - get: concourse-helm-chart
+      trigger: true
+      params:
+        skip_download: true
+    - get: helm-image
+    - get: terraform-keys-and-certs
+      passed:
+      - create-keys-and-certs
+  - task: helm-upgrade
+    image: helm-image
+    file: concourse-helm-repo/ci/tasks/helm-upgrade/task.yml
+    params:
+      KUBECONFIG_CONTENTS: ((kubeconfig))
+      ADMIN_PASSWORD: ((admin_password))

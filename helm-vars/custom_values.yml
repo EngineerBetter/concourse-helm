@@ -1,0 +1,16 @@
+web:
+  service:
+    api:
+      type: LoadBalancer
+concourse:
+  worker:
+    baggageclaim:
+      driver: detect
+  web:
+    auth:
+      mainTeam:
+        localUser: admin
+    bindPort: 80
+    tls:
+      enabled: true
+      bindPort: 443
