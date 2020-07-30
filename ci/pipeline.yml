@@ -86,9 +86,9 @@ jobs:
     image: helm-image
     file: concourse-helm-repo/ci/tasks/helm-upgrade/task.yml
     params:
-      KUBECONFIG_CONTENTS: ((kubeconfig))
       ADMIN_PASSWORD: ((admin_password))
-      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
       ENV: ((env))
-      WEB_DOMAIN: ((web_domain))
+      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
+      KUBECONFIG_CONTENTS: ((kubeconfig))
       LB_IP: ((lb_ip))
+      WEB_DOMAIN: ((web_domain))
