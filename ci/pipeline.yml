@@ -88,3 +88,4 @@ jobs:
     params:
       KUBECONFIG_CONTENTS: ((kubeconfig))
       ADMIN_PASSWORD: ((admin_password))
+      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
