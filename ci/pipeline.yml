@@ -91,3 +91,4 @@ jobs:
       GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
       ENV: ((env))
       WEB_DOMAIN: ((web_domain))
+      LB_IP: ((lb_ip))
