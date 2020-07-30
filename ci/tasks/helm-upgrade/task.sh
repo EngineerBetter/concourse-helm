@@ -24,5 +24,4 @@ helm upgrade "$ENV" concourse/concourse \
   --install \
   --namespace "$ENV" \
   --create-namespace \
-  --atomic \
-  --dry-run
+  --atomic
