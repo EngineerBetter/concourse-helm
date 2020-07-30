@@ -5,9 +5,15 @@ resource "tls_private_key" "ca" {
 }
 
 resource "tls_self_signed_cert" "ca" {
-  key_algorithm     = "${tls_private_key.ca.algorithm}"
-  private_key_pem   = "${tls_private_key.ca.private_key_pem}"
+  key_algorithm     = tls_private_key.ca.algorithm
+  private_key_pem   = tls_private_key.ca.private_key_pem
   is_ca_certificate = true
+
+  allowed_uses = [
+    "cert_signing",
+    "key_encipherment",
+    "digital_signature",
+  ]
 
   validity_period_hours = 87600
 
@@ -21,8 +27,8 @@ resource "tls_private_key" "tls_key" {
 }
 
 resource "tls_cert_request" "cert" {
-  key_algorithm   = "${tls_private_key.cert.algorithm}"
-  private_key_pem = "${tls_private_key.cert.private_key_pem}"
+  key_algorithm   = tls_private_key.tls_key.algorithm
+  private_key_pem = tls_private_key.tls_key.private_key_pem
 
   dns_names = [var.web_domain]
 
@@ -32,10 +38,10 @@ resource "tls_cert_request" "cert" {
 }
 
 resource "tls_locally_signed_cert" "web_tls" {
-  cert_request_pem   = "${tls_cert_request.cert.cert_request_pem}"
-  ca_key_algorithm   = "${tls_private_key.ca.algorithm}"
-  ca_private_key_pem = "${tls_private_key.ca.private_key_pem}"
-  ca_cert_pem        = "${tls_self_signed_cert.ca.cert_pem}"
+  cert_request_pem   = tls_cert_request.cert.cert_request_pem
+  ca_key_algorithm   = tls_private_key.ca.algorithm
+  ca_private_key_pem = tls_private_key.ca.private_key_pem
+  ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   validity_period_hours = 8760
 
@@ -49,8 +55,6 @@ resource "tls_locally_signed_cert" "web_tls" {
     "digital_signature",
     "server_auth",
   ]
-
-  dns_names = [var.web_domain]
 }
 
 output "web_tls_cert" {
