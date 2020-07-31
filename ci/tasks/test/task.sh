@@ -5,9 +5,21 @@ set -euo pipefail
 function deleteAllSecrets() {
   echo "Deleting secrets in test namespace"
   kubectl --kubeconfig=kubeconfig.json \
-    delete secrets \
-    --namespace=test \
-    --all
+    delete secret \
+    --namespace=concourse-test \
+    secrets
+  kubectl --kubeconfig=kubeconfig.json \
+    delete secret \
+    --namespace=concourse-test \
+    team-password
+  kubectl --kubeconfig=kubeconfig.json \
+    delete secret \
+    --namespace=concourse-test \
+    test-pipeline.pipeline-password
+  kubectl --kubeconfig=kubeconfig.json \
+    delete secret \
+    --namespace=concourse-test \
+    test-pipeline.pipeline-secrets
 }
 
 function cleanup() {
