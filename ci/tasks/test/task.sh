@@ -86,5 +86,5 @@ fly --target=test trigger-job \
 
 echo "Deleting test pipeline"
 fly --target=test destroy-pipeline \
-  --pipeline=test-concourse \
+  --pipeline=test-pipeline \
   --non-interactive
