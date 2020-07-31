@@ -14,18 +14,21 @@ resource_types:
 resources:
 - name: concourse-helm-repo
   type: git
+  icon: github
   source:
     uri: git@github.com:EngineerBetter/concourse-helm.git
     private_key: ((github_private_key))
 
 - name: concourse-helm-chart
   type: helm-chart
+  icon: ship-wheel
   source:
     repository_url: https://concourse-charts.storage.googleapis.com
     chart: concourse
 
 - name: terraform-keys-and-certs
   type: terraform
+  icon: terraform
   source:
     env_name: ((env))
     backend_type: s3
@@ -40,9 +43,16 @@ resources:
 
 - name: helm-image
   type: registry-image
+  icon: docker
   source:
     repository: alpine/k8s
     tag: 1.17.5
+
+- name: pcf-ops
+  type: registry-image
+  icon: docker
+  source:
+    repository: engineerbetter/pcf-ops
 
 jobs:
 - name: set-pipeline
@@ -91,4 +101,26 @@ jobs:
       GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
       KUBECONFIG_CONTENTS: ((kubeconfig))
       LB_IP: ((lb_ip))
+      WEB_DOMAIN: ((web_domain))
+
+- name: test-concourse
+  serial: true
+  plan:
+  - in_parallel:
+    - get: concourse-helm-repo
+      trigger: true
+      passed:
+      - deploy-concourse
+    - get: concourse-helm-chart
+      trigger: true
+      params:
+        skip_download: true
+    - get: pcf-ops
+  - task: run-test
+    image: pcf-ops
+    file: concourse-helm-repo/ci/tasks/test/task.yml
+    params:
+      ADMIN_PASSWORD: ((admin_password))
+      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
+      KUBECONFIG_CONTENTS: ((kubeconfig))
       WEB_DOMAIN: ((web_domain))

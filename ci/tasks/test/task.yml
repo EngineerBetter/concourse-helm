@@ -1,0 +1,14 @@
+---
+platform: linux
+
+inputs:
+- name: concourse-helm-repo
+
+run:
+  path: concourse-helm-repo/ci/tasks/test/task.sh
+
+params:
+  ADMIN_PASSWORD:
+  GOOGLE_APPLICATION_CREDENTIALS_CONTENTS:
+  KUBECONFIG_CONTENTS:
+  WEB_DOMAIN:

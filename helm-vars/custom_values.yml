@@ -14,3 +14,7 @@ concourse:
     tls:
       enabled: true
       bindPort: 443
+    kubernetes:
+      teams:
+      - main
+      - test

@@ -1,0 +1,25 @@
+---
+jobs:
+- name: run-test
+  serial: true
+  plan:
+  - task: run-test
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source: {repository: ubuntu}
+      params:
+        PIPELINE_SCOPED: ((pipeline-password))
+        TEAM_SCOPED: ((team-password))
+        NESTED_PIPELINE_SCOPED: ((pipeline-secrets.api-key))
+        NESTED_TEAM_SCOPED: ((secrets.api-key))
+      run:
+        path: bash
+        args:
+        - -euxc
+        - |
+          [[ "${PIPELINE_SCOPED}" = "test-c1oud" ]]
+          [[ "${TEAM_SCOPED}" = "test-c0w" ]]
+          [[ "${NESTED_PIPELINE_SCOPED}" = "deadbeef" ]]
+          [[ "${NESTED_TEAM_SCOPED}" = "f00bar" ]]
