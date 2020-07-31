@@ -11,8 +11,8 @@ export GOOGLE_APPLICATION_CREDENTIALS=google_creds.json
 
 jq -r '.web_tls_cert' terraform-keys-and-certs/metadata > web_tls_cert.pem
 jq -r '.web_tls_key' terraform-keys-and-certs/metadata > web_tls_key.pem
-jq -r '.worker_key' terraform-keys-and-certs/metadata > worker_key.pem
-jq -r '.worker_key_pub' terraform-keys-and-certs/metadata > worker_key_pub.pem
+echo "$WORKER_KEY" > worker_key.pem
+echo "$WORKER_KEY_PUB" > worker_key_pub.pem
 
 helm --kubeconfig=kubeconfig.json repo add concourse https://concourse-charts.storage.googleapis.com
 

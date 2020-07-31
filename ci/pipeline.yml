@@ -102,6 +102,8 @@ jobs:
       KUBECONFIG_CONTENTS: ((kubeconfig))
       LB_IP: ((lb_ip))
       WEB_DOMAIN: ((web_domain))
+      WORKER_KEY: ((worker_key.private_key))
+      WORKER_KEY_PUB: ((worker_key.public_key))
 
 - name: test-concourse
   serial: true
