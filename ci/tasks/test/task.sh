@@ -2,6 +2,26 @@
 
 set -euo pipefail
 
+function deleteAllSecrets() {
+  echo "Deleting secrets in test namespace"
+  kubectl --kubeconfig=kubeconfig.json \
+    delete secrets \
+    --namespace=test \
+    --all
+}
+
+function cleanup() {
+  status=$?
+  set +e
+  deleteAllSecrets
+  set -e
+  exit $status
+}
+
+trap cleanup EXIT
+
+deleteAllSecrets
+
 echo "$KUBECONFIG_CONTENTS" > kubeconfig.json
 echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENTS" > google_creds.json
 
@@ -57,9 +77,3 @@ echo "Deleting test pipeline"
 fly --target=test destroy-pipeline \
   --pipeline=test-concourse \
   --non-interactive
-
-echo "Deleting secrets in test namespace"
-kubectl --kubeconfig=kubeconfig.json \
-  delete secrets \
-  --namespace=test \
-  --all
