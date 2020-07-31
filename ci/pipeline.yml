@@ -45,7 +45,7 @@ jobs:
   plan:
   - get: concourse-helm-repo
     trigger: true
-  - set_pipeline: concourse-helm
+  - set_pipeline: ((env))-helm
     file: concourse-helm-repo/ci/pipeline.yml
     vars:
       env: ((env))
