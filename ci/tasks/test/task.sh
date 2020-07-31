@@ -31,6 +31,13 @@ kubectl --kubeconfig=kubeconfig.json \
   create \
   --filename=concourse-helm-repo/ci/tasks/test/nested-pipeline-scoped-secret.yml
 
+echo "Ensuring test team exists"
+fly --target=test \
+  set-team \
+  --team-name=test \
+  --local-user=admin \
+  --non-interactive
+
 echo "Setting test pipeline"
 fly --target=test set-pipeline \
   --pipeline=test-pipeline \
