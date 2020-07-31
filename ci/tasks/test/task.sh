@@ -18,14 +18,13 @@ function cleanup() {
   exit $status
 }
 
-trap cleanup EXIT
-
-deleteAllSecrets
-
 echo "$KUBECONFIG_CONTENTS" > kubeconfig.json
 echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENTS" > google_creds.json
 
 export GOOGLE_APPLICATION_CREDENTIALS=google_creds.json
+
+trap cleanup EXIT
+deleteAllSecrets
 
 fly --target test login \
   --concourse-url="https://${WEB_DOMAIN}" \
