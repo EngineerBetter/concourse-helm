@@ -9,8 +9,8 @@ echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENTS" > google_creds.json
 
 export GOOGLE_APPLICATION_CREDENTIALS=google_creds.json
 
-jq -r '.web_tls_cert' terraform-keys-and-certs/metadata > web_tls_cert.pem
-jq -r '.web_tls_key' terraform-keys-and-certs/metadata > web_tls_key.pem
+echo "$WEB_TLS_CERT" > web_tls_cert.pem
+echo "$WEB_TLS_KEY" > web_tls_key.pem
 echo "$WORKER_KEY" > worker_key.pem
 echo "$WORKER_KEY_PUB" > worker_key_pub.pem
 

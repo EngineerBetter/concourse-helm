@@ -26,21 +26,6 @@ resources:
     repository_url: https://concourse-charts.storage.googleapis.com
     chart: concourse
 
-- name: terraform-keys-and-certs
-  type: terraform
-  icon: terraform
-  source:
-    env_name: ((env))
-    backend_type: s3
-    backend_config:
-      bucket: ((terraform_state_bucket))
-      key: ((env))/terraform.tfstate
-      region: ((aws_default_region))
-      access_key: ((aws_access_key_id))
-      secret_key: ((aws_secret_access_key))
-    vars:
-      web_domain: ((web_domain))
-
 - name: helm-image
   type: registry-image
   icon: docker
@@ -65,17 +50,6 @@ jobs:
     vars:
       env: ((env))
 
-- name: create-keys-and-certs
-  serial: true
-  plan:
-  - get: concourse-helm-repo
-    trigger: true
-    passed:
-    - set-pipeline
-  - put: terraform-keys-and-certs
-    params:
-      terraform_source: concourse-helm-repo/terraform
-
 - name: deploy-concourse
   serial: true
   plan:
@@ -83,15 +57,12 @@ jobs:
     - get: concourse-helm-repo
       trigger: true
       passed:
-      - create-keys-and-certs
+      - set-pipeline
     - get: concourse-helm-chart
       trigger: true
       params:
         skip_download: true
     - get: helm-image
-    - get: terraform-keys-and-certs
-      passed:
-      - create-keys-and-certs
   - task: helm-upgrade
     image: helm-image
     file: concourse-helm-repo/ci/tasks/helm-upgrade/task.yml
@@ -102,6 +73,8 @@ jobs:
       KUBECONFIG_CONTENTS: ((kubeconfig))
       LB_IP: ((lb_ip))
       WEB_DOMAIN: ((web_domain))
+      WEB_TLS_CERT: ((web_tls.certificate))
+      WEB_TLS_KEY: ((web_tls.private_key))
       WORKER_KEY: ((worker_key.private_key))
       WORKER_KEY_PUB: ((worker_key.public_key))
 

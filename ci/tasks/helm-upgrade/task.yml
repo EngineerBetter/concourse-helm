@@ -3,7 +3,6 @@ platform: linux
 
 inputs:
 - name: concourse-helm-repo
-- name: terraform-keys-and-certs
 
 run:
   path: concourse-helm-repo/ci/tasks/helm-upgrade/task.sh
@@ -15,5 +14,7 @@ params:
   KUBECONFIG_CONTENTS:
   LB_IP:
   WEB_DOMAIN:
+  WEB_TLS_CERT:
+  WEB_TLS_KEY:
   WORKER_KEY:
   WORKER_KEY_PUB:
