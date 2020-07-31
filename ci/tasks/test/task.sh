@@ -3,7 +3,8 @@
 set -euo pipefail
 
 function deleteAllSecrets() {
-  echo "Deleting secrets in test namespace"
+  set +e
+  echo "Deleting secrets in concourse-test namespace"
   kubectl --kubeconfig=kubeconfig.json \
     delete secret \
     --namespace=concourse-test \
@@ -20,13 +21,12 @@ function deleteAllSecrets() {
     delete secret \
     --namespace=concourse-test \
     test-pipeline.pipeline-secrets
+  set -e
 }
 
 function cleanup() {
   status=$?
-  set +e
   deleteAllSecrets
-  set -e
   exit $status
 }
 
