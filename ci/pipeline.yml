@@ -88,6 +88,8 @@ jobs:
       - deploy-concourse
     - get: concourse-helm-chart
       trigger: true
+      passed:
+      - deploy-concourse
       params:
         skip_download: true
     - get: pcf-ops
