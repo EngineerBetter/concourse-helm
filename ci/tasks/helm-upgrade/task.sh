@@ -23,23 +23,23 @@ if ! helm --kubeconfig=kubeconfig.json plugin install https://github.com/databus
   fi
 fi
 
-helm_flags=$(cat << FLAGS
---values concourse-helm-repo/helm-vars/custom_values.yml \
---set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
---set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
---kubeconfig=kubeconfig.json \
---install \
---namespace "$ENV"
-FLAGS
-)
-
 echo "Changes to be applied:"
 helm diff upgrade "$ENV" concourse/concourse \
-  "${helm_flags}" \
+  --values concourse-helm-repo/helm-vars/custom_values.yml \
+  --set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
+  --set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
+  --kubeconfig=kubeconfig.json \
+  --install \
+  --namespace "$ENV" \
   --suppress-secrets
 
 echo "Performing upgrade"
 helm upgrade "$ENV" concourse/concourse \
-  "${helm_flags}" \
+  --values concourse-helm-repo/helm-vars/custom_values.yml \
+  --set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
+  --set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
+  --kubeconfig=kubeconfig.json \
+  --install \
+  --namespace "$ENV" \
   --create-namespace \
   --atomic
