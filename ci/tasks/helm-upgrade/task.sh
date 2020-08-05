@@ -1,8 +1,6 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2140
 
-# https://ahmet.im/blog/authenticating-to-gke-without-gcloud/
-
 set -eu
 echo "$KUBECONFIG_CONTENTS" > kubeconfig.json
 echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENTS" > google_creds.json

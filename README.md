@@ -69,3 +69,7 @@ fly --target target \
   --config=ci/pipeline.yml \
   --var env=<env>
 ```
+
+## Acknowledgment
+
+Getting the scripts to connect to GKE using a GCP service account is based on [this blog post](https://ahmet.im/blog/authenticating-to-gke-without-gcloud/)
