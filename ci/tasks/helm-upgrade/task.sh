@@ -13,7 +13,15 @@ echo "$WORKER_KEY" > worker_key.pem
 echo "$WORKER_KEY_PUB" > worker_key_pub.pem
 
 helm --kubeconfig=kubeconfig.json repo add concourse https://concourse-charts.storage.googleapis.com
-helm plugin install https://github.com/databus23/helm-diff
+
+if ! helm --kubeconfig=kubeconfig.json plugin install https://github.com/databus23/helm-diff ; then
+  diff_plugin_installed_version=$(helm --kubeconfig=kubeconfig.json plugin list | grep diff | awk '{print $2}')
+  diff_plugin_latest_version=$(cat helm-diff-release/version)
+
+  if [ "${diff_plugin_installed_version}" != "${diff_plugin_latest_version}" ]; then
+    helm --kubeconfig=kubeconfig.json plugin update diff
+  fi
+fi
 
 helm_flags=$(cat << FLAGS
 --values concourse-helm-repo/helm-vars/custom_values.yml \

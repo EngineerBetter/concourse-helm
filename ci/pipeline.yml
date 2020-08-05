@@ -19,6 +19,14 @@ resources:
     uri: git@github.com:EngineerBetter/concourse-helm.git
     private_key: ((github_private_key))
 
+- name: helm-diff-release
+  type: github-release
+  icon: github
+  check_every: 5m
+  source:
+    owner: databus23
+    repository: helm-diff
+
 - name: concourse-helm-chart
   type: helm-chart
   icon: ship-wheel
@@ -63,6 +71,10 @@ jobs:
       params:
         skip_download: true
     - get: helm-image
+    - get: helm-diff-release
+      params:
+        globs:
+        - helm-diff-linux.tgz
   - task: helm-upgrade
     image: helm-image
     file: concourse-helm-repo/ci/tasks/helm-upgrade/task.yml

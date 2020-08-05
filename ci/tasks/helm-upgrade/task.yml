@@ -3,6 +3,7 @@ platform: linux
 
 inputs:
 - name: concourse-helm-repo
+- name: helm-diff-release
 
 run:
   path: concourse-helm-repo/ci/tasks/helm-upgrade/task.sh
