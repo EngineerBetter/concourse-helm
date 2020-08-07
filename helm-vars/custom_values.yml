@@ -18,3 +18,5 @@ concourse:
       teams:
       - main
       - test
+    prometheus:
+      enabled: true
