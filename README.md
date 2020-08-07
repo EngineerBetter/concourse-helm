@@ -39,7 +39,12 @@ credentials:
   value:
 
 # Pre-configured static IP in GCP for use with web load balancer
-- name: /concourse/main/concourse-helm/lb_ip
+- name: /concourse/main/concourse-helm/web_lb_ip
+  type: value
+  value:
+
+# Pre-configured static IP in GCP for use with grafana load balancer
+- name: /concourse/main/concourse-helm/grafana_lb_ip
   type: value
   value:
 
