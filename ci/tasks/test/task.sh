@@ -30,10 +30,12 @@ function cleanup() {
   exit $status
 }
 
-echo "$KUBECONFIG_CONTENTS" > kubeconfig.json
-echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENTS" > google_creds.json
+this_dir="$(cd "$(dirname "$0")" && pwd)"
 
-export GOOGLE_APPLICATION_CREDENTIALS=google_creds.json
+# shellcheck disable=SC1090
+. "${this_dir}/../helpers/functions.sh"
+
+setup_kubeconfig
 
 trap cleanup EXIT
 deleteAllSecrets
