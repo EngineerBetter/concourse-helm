@@ -9,3 +9,6 @@ datasources:
       type: prometheus
       url: http://prometheus-server.prometheus.svc:80
       access: proxy
+
+persistence:
+  enabled: true
