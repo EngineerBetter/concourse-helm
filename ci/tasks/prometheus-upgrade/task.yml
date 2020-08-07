@@ -1,0 +1,13 @@
+---
+platform: linux
+
+inputs:
+- name: concourse-helm-repo
+- name: helm-diff-release
+
+run:
+  path: concourse-helm-repo/ci/tasks/prometheus-upgrade/task.sh
+
+params:
+  GOOGLE_APPLICATION_CREDENTIALS_CONTENTS:
+  KUBECONFIG_CONTENTS:

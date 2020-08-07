@@ -75,9 +75,9 @@ jobs:
       params:
         globs:
         - helm-diff-linux.tgz
-  - task: helm-upgrade
+  - task: concourse-upgrade
     image: helm-image
-    file: concourse-helm-repo/ci/tasks/helm-upgrade/task.yml
+    file: concourse-helm-repo/ci/tasks/concourse-upgrade/task.yml
     params:
       ADMIN_PASSWORD: ((admin_password))
       ENV: ((env))
@@ -89,6 +89,30 @@ jobs:
       WEB_TLS_KEY: ((web_tls.private_key))
       WORKER_KEY: ((worker_key.private_key))
       WORKER_KEY_PUB: ((worker_key.public_key))
+
+- name: deploy-metrics
+  serial: true
+  plan:
+  - in_parallel:
+    - get: concourse-helm-repo
+      trigger: true
+      passed:
+      - set-pipeline
+    - get: concourse-helm-chart
+      trigger: true
+      params:
+        skip_download: true
+    - get: helm-image
+    - get: helm-diff-release
+      params:
+        globs:
+        - helm-diff-linux.tgz
+  - task: prometheus-upgrade
+    image: helm-image
+    file: concourse-helm-repo/ci/tasks/prometheus-upgrade/task.yml
+    params:
+      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
+      KUBECONFIG_CONTENTS: ((kubeconfig))
 
 - name: test-concourse
   serial: true
