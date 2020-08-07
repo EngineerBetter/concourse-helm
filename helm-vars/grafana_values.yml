@@ -2,7 +2,10 @@ service:
   type: LoadBalancer
 
 datasources:
-- name: Prometheus
-  type: prometheus
-  url: http://prometheus-server.prometheus.svc:80
-  access: proxy
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.prometheus.svc:80
+      access: proxy
