@@ -116,6 +116,11 @@ jobs:
     file: concourse-helm-repo/ci/tasks/prometheus-upgrade/task.yml
     params:
       <<: *kubeconfig_params
+  - task: grafana-upgrade
+    image: helm-image
+    file: concourse-helm-repo/ci/tasks/grafana-upgrade/task.yml
+    params:
+      <<: *kubeconfig_params
 
 - name: test-concourse
   serial: true
