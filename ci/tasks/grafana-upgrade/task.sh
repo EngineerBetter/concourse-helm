@@ -18,6 +18,7 @@ echo "Changes to be applied:"
 helm diff upgrade grafana stable/grafana \
   --kubeconfig=kubeconfig.json \
   --values concourse-helm-repo/helm-vars/grafana_values.yml \
+  --set service.loadBalancerIP="${GRAFANA_LB_IP}" \
   --install \
   --namespace grafana \
   --suppress-secrets
@@ -26,6 +27,7 @@ echo "Performing upgrade"
 helm upgrade grafana stable/grafana \
   --kubeconfig=kubeconfig.json \
   --values concourse-helm-repo/helm-vars/grafana_values.yml \
+  --set service.loadBalancerIP="${GRAFANA_LB_IP}" \
   --install \
   --namespace grafana \
   --create-namespace \

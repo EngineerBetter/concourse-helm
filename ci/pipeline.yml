@@ -87,7 +87,7 @@ jobs:
       <<: *kubeconfig_params
       ADMIN_PASSWORD: ((admin_password))
       ENV: ((env))
-      LB_IP: ((lb_ip))
+      WEB_LB_IP: ((web_lb_ip))
       WEB_DOMAIN: ((web_domain))
       WEB_TLS_CERT: ((web_tls.certificate))
       WEB_TLS_KEY: ((web_tls.private_key))
@@ -121,6 +121,7 @@ jobs:
     file: concourse-helm-repo/ci/tasks/grafana-upgrade/task.yml
     params:
       <<: *kubeconfig_params
+      GRAFANA_LB_IP: ((grafana_lb_ip))
 
 - name: test-concourse
   serial: true
