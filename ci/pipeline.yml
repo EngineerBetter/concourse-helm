@@ -1,4 +1,9 @@
 ---
+anchors:
+  kubeconfig_params: &kubeconfig_params
+    GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
+    KUBECONFIG_CONTENTS: ((kubeconfig))
+
 resource_types:
 - name: terraform
   type: registry-image
@@ -79,10 +84,9 @@ jobs:
     image: helm-image
     file: concourse-helm-repo/ci/tasks/concourse-upgrade/task.yml
     params:
+      <<: *kubeconfig_params
       ADMIN_PASSWORD: ((admin_password))
       ENV: ((env))
-      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
-      KUBECONFIG_CONTENTS: ((kubeconfig))
       LB_IP: ((lb_ip))
       WEB_DOMAIN: ((web_domain))
       WEB_TLS_CERT: ((web_tls.certificate))
@@ -111,8 +115,7 @@ jobs:
     image: helm-image
     file: concourse-helm-repo/ci/tasks/prometheus-upgrade/task.yml
     params:
-      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
-      KUBECONFIG_CONTENTS: ((kubeconfig))
+      <<: *kubeconfig_params
 
 - name: test-concourse
   serial: true
@@ -133,7 +136,6 @@ jobs:
     image: pcf-ops
     file: concourse-helm-repo/ci/tasks/test/task.yml
     params:
+      <<: *kubeconfig_params
       ADMIN_PASSWORD: ((admin_password))
-      GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
-      KUBECONFIG_CONTENTS: ((kubeconfig))
       WEB_DOMAIN: ((web_domain))

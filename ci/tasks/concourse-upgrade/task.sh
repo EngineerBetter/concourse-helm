@@ -21,7 +21,7 @@ install_helm_diff
 
 echo "Changes to be applied:"
 helm diff upgrade "$ENV" concourse/concourse \
-  --values concourse-helm-repo/helm-vars/custom_values.yml \
+  --values concourse-helm-repo/helm-vars/concourse_values.yml \
   --set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
   --set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
   --kubeconfig=kubeconfig.json \
@@ -31,7 +31,7 @@ helm diff upgrade "$ENV" concourse/concourse \
 
 echo "Performing upgrade"
 helm upgrade "$ENV" concourse/concourse \
-  --values concourse-helm-repo/helm-vars/custom_values.yml \
+  --values concourse-helm-repo/helm-vars/concourse_values.yml \
   --set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
   --set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
   --kubeconfig=kubeconfig.json \
