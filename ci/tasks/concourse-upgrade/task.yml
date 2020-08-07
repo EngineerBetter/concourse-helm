@@ -6,7 +6,7 @@ inputs:
 - name: helm-diff-release
 
 run:
-  path: concourse-helm-repo/ci/tasks/helm-upgrade/task.sh
+  path: concourse-helm-repo/ci/tasks/concourse-upgrade/task.sh
 
 params:
   ADMIN_PASSWORD:
