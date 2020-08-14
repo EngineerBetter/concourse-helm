@@ -18,13 +18,11 @@ echo "Changes to be applied:"
 helm diff upgrade prometheus stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
   --install \
-  --namespace prometheus-operator \
   --suppress-secrets
 
 echo "Performing upgrade"
 helm upgrade prometheus-operator stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
   --install \
-  --namespace prometheus-operator \
   --create-namespace \
   --atomic
