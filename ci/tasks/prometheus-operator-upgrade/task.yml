@@ -6,7 +6,7 @@ inputs:
 - name: helm-diff-release
 
 run:
-  path: concourse-helm-repo/ci/tasks/prometheus-upgrade/task.sh
+  path: concourse-helm-repo/ci/tasks/prometheus-operator-upgrade/task.sh
 
 params:
   GOOGLE_APPLICATION_CREDENTIALS_CONTENTS:
