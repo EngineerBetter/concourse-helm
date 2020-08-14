@@ -132,12 +132,12 @@ jobs:
     file: concourse-helm-repo/ci/tasks/prometheus-operator-upgrade/task.yml
     params:
       <<: *kubeconfig_params
-  - task: grafana-upgrade
-    image: helm-image
-    file: concourse-helm-repo/ci/tasks/grafana-upgrade/task.yml
-    params:
-      <<: *kubeconfig_params
-      GRAFANA_LB_IP: ((grafana_lb_ip))
+  # - task: grafana-upgrade
+  #   image: helm-image
+  #   file: concourse-helm-repo/ci/tasks/grafana-upgrade/task.yml
+  #   params:
+  #     <<: *kubeconfig_params
+  #     GRAFANA_LB_IP: ((grafana_lb_ip))
 
 - name: test-concourse
   serial: true
