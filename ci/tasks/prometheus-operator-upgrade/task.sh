@@ -17,6 +17,7 @@ install_helm_diff
 echo "Changes to be applied:"
 helm diff upgrade prometheus-operator stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
+  --namespace=prometheus-operator \
   --install \
   --suppress-secrets
 
@@ -24,5 +25,6 @@ echo "Performing upgrade"
 helm upgrade prometheus-operator stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
   --install \
+  --namespace=prometheus-operator \
   --create-namespace \
   --atomic
