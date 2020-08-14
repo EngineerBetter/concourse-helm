@@ -15,7 +15,7 @@ helm --kubeconfig=kubeconfig.json repo add stable https://kubernetes-charts.stor
 install_helm_diff
 
 echo "Changes to be applied:"
-helm diff upgrade prometheus stable/prometheus-operator \
+helm diff upgrade prometheus-operator stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
   --install \
   --suppress-secrets
