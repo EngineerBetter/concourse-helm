@@ -50,12 +50,12 @@ resources:
     repository_url: https://kubernetes-charts.storage.googleapis.com
     chart: prometheus-operator
 
-- name: grafana-helm-chart
-  type: helm-chart
-  icon: ship-wheel
-  source:
-    repository_url: https://kubernetes-charts.storage.googleapis.com
-    chart: grafana
+# - name: grafana-helm-chart
+#   type: helm-chart
+#   icon: ship-wheel
+#   source:
+#     repository_url: https://kubernetes-charts.storage.googleapis.com
+#     chart: grafana
 
 - name: helm-image
   type: registry-image
@@ -120,8 +120,8 @@ jobs:
       - set-pipeline
     - get: prometheus-operator-helm-chart
       <<: *trigger-without-download
-    - get: grafana-helm-chart
-      <<: *trigger-without-download
+    # - get: grafana-helm-chart
+    #   <<: *trigger-without-download
     - get: helm-image
     - get: helm-diff-release
       params:
