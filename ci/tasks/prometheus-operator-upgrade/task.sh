@@ -18,7 +18,7 @@ echo "Changes to be applied:"
 helm diff upgrade prometheus-operator stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
   --namespace=prometheus-operator \
-  --set prometheusOperator.service.loadBalancerIP="${PROMETHEUS_LB_IP}" \
+  --set prometheus.service.loadBalancerIP="${PROMETHEUS_LB_IP}" \
   --values concourse-helm-repo/helm-vars/prometheus_operator_values.yml \
   --install \
   --suppress-secrets
@@ -28,7 +28,7 @@ helm upgrade prometheus-operator stable/prometheus-operator \
   --kubeconfig=kubeconfig.json \
   --install \
   --namespace=prometheus-operator \
-  --set prometheusOperator.service.loadBalancerIP="${PROMETHEUS_LB_IP}" \
+  --set prometheus.service.loadBalancerIP="${PROMETHEUS_LB_IP}" \
   --values concourse-helm-repo/helm-vars/prometheus_operator_values.yml \
   --create-namespace \
   --atomic
