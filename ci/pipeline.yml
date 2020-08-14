@@ -3,6 +3,10 @@ anchors:
   kubeconfig_params: &kubeconfig_params
     GOOGLE_APPLICATION_CREDENTIALS_CONTENTS: ((gcp_service_account_json))
     KUBECONFIG_CONTENTS: ((kubeconfig))
+  trigger-without-download: &trigger-without-download
+    trigger: true
+    params:
+      skip_download: true
 
 resource_types:
 - name: terraform
@@ -39,6 +43,20 @@ resources:
     repository_url: https://concourse-charts.storage.googleapis.com
     chart: concourse
 
+- name: prometheus-operator-helm-chart
+  type: helm-chart
+  icon: ship-wheel
+  source:
+    repository_url: https://kubernetes-charts.storage.googleapis.com
+    chart: prometheus-operator
+
+- name: grafana-helm-chart
+  type: helm-chart
+  icon: ship-wheel
+  source:
+    repository_url: https://kubernetes-charts.storage.googleapis.com
+    chart: grafana
+
 - name: helm-image
   type: registry-image
   icon: docker
@@ -72,9 +90,7 @@ jobs:
       passed:
       - set-pipeline
     - get: concourse-helm-chart
-      trigger: true
-      params:
-        skip_download: true
+      <<: *trigger-without-download
     - get: helm-image
     - get: helm-diff-release
       params:
@@ -102,18 +118,18 @@ jobs:
       trigger: true
       passed:
       - set-pipeline
-    - get: concourse-helm-chart
-      trigger: true
-      params:
-        skip_download: true
+    - get: prometheus-operator-helm-chart
+      <<: *trigger-without-download
+    - get: grafana-helm-chart
+      <<: *trigger-without-download
     - get: helm-image
     - get: helm-diff-release
       params:
         globs:
         - helm-diff-linux.tgz
-  - task: prometheus-upgrade
+  - task: prometheus-operator-upgrade
     image: helm-image
-    file: concourse-helm-repo/ci/tasks/prometheus-upgrade/task.yml
+    file: concourse-helm-repo/ci/tasks/prometheus-operator-upgrade/task.yml
     params:
       <<: *kubeconfig_params
   - task: grafana-upgrade
