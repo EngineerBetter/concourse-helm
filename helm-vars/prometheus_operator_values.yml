@@ -1,0 +1,3 @@
+prometheusOperator:
+  service:
+    type: LoadBalancer
