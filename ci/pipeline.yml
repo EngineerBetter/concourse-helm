@@ -102,6 +102,7 @@ jobs:
     params:
       <<: *kubeconfig_params
       ADMIN_PASSWORD: ((admin_password))
+      DEVOPS_PASSWORD: ((devops_password))
       ENV: ((env))
       USER_PASSWORD: ((user_password))
       WEB_LB_IP: ((web_lb_ip))
