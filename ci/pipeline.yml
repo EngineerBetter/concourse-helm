@@ -103,6 +103,7 @@ jobs:
       <<: *kubeconfig_params
       ADMIN_PASSWORD: ((admin_password))
       ENV: ((env))
+      USER_PASSWORD: ((user_password))
       WEB_LB_IP: ((web_lb_ip))
       WEB_DOMAIN: ((web_domain))
       WEB_TLS_CERT: ((web_tls.certificate))

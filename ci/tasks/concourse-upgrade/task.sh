@@ -23,7 +23,7 @@ echo "Changes to be applied:"
 helm diff upgrade "$ENV" concourse/concourse \
   --values concourse-helm-repo/helm-vars/concourse_values.yml \
   --set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
-  --set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$WEB_LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
+  --set secrets.localUsers="admin:$ADMIN_PASSWORD,user:$USER_PASSWORD",web.service.api.loadBalancerIP="$WEB_LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
   --kubeconfig=kubeconfig.json \
   --install \
   --namespace "$ENV" \
@@ -33,7 +33,7 @@ echo "Performing upgrade"
 helm upgrade "$ENV" concourse/concourse \
   --values concourse-helm-repo/helm-vars/concourse_values.yml \
   --set-file secrets.webTlsCert=web_tls_cert.pem,secrets.webTlsKey=web_tls_key.pem,secrets.workerKey=worker_key.pem,secrets.workerKeyPub=worker_key_pub.pem \
-  --set secrets.localUsers="admin:$ADMIN_PASSWORD",web.service.api.loadBalancerIP="$WEB_LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
+  --set secrets.localUsers="admin:$ADMIN_PASSWORD,user:$USER_PASSWORD",web.service.api.loadBalancerIP="$WEB_LB_IP",concourse.web.externalUrl="https://$WEB_DOMAIN" \
   --kubeconfig=kubeconfig.json \
   --install \
   --namespace "$ENV" \
